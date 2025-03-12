@@ -55,7 +55,7 @@ export function RatingReview({ workerId, onReviewAdded }: RatingReviewProps) {
       setReview('');
       onReviewAdded();
       
-    } catch (error) {
+    } catch {
       toast({
         title: "Failed to submit review",
         variant: "destructive",

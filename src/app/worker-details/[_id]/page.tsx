@@ -206,7 +206,7 @@ function WorkerDetails() {
               </div>
               <div className="w-full grid place-content-center mt-2 p-2 items-center ">
                 <h1 className="font-[DM Sans] text-center mb-1 font-bold text-[22px] leading-[22px]">
-                  "One of a kind service"
+                  &ldquo;One of a kind service&rdquo;
                 </h1>
                 <p className="font-[DM Sans] text-[14px] leading-[18px] text-center  text-[#887777]">
                   {workerDetails?.workerProfileBio}
@@ -226,7 +226,7 @@ function WorkerDetails() {
                         <span className="text-sm font-bold text-red-400">
                           {workerDetails?.workerName}
                         </span>
-                        . Click report when you're done.
+                        . Click report when you&apos;re done.
                       </DialogDescription>
                     </DialogHeader>
                     <div className="flex gap-4 py-4">
