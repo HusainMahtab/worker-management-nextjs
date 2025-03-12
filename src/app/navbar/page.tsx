@@ -12,8 +12,7 @@ import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button";
-import { UserRoundSearch } from "lucide-react";
+
 
 function NavBar() {
   const { data: session, status } = useSession();

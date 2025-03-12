@@ -5,7 +5,6 @@ import { HomeIcon, Users, Bell, Settings, CircleUser } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
-  SidebarHeader,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,

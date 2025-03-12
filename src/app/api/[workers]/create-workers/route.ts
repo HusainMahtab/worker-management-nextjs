@@ -1,7 +1,5 @@
 import { WorkerModel } from "@/models/worker.model";
 import dbConnection from "@/lib/dbConnection";
-import { UserModel } from "@/models/user.model";
-import bcrypt from "bcryptjs";
 export async function POST(request:Request) {
     dbConnection()
     const {
