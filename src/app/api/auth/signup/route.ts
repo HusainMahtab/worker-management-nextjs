@@ -25,7 +25,7 @@ export async function POST(request: Request) {
         }
 
         // Generate verification code
-        const verifyCode = Math.round(Math.random()*1000000).toString();
+        const verifyCode = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
         const verificationCodeExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes expiry
 
         // Hash password
