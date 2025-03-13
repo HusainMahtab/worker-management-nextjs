@@ -1,13 +1,14 @@
 import dbConnection from "@/lib/dbConnection";
 import { WorkerModel } from "@/models/worker.model";
+import { NextRequest } from "next/server";
 
 export async function POST(
-  request: Request,
-  { params }: { params: { _id: string } }
+  request: NextRequest,
+  context: { params: { _id: string } }
 ) {
   dbConnection();
-  const { _id } = await params;
-  console.log("id",_id)
+  const { _id } = context.params;
+  //console.log("id",_id)
   const {
     workerName,
     workerEmail,
@@ -20,11 +21,11 @@ export async function POST(
     isWorkerAvailable
   } = await request.json();
 
-  console.log("workerName",workerName,workerEmail,
-    workerPhoneNumber,
-    workerExperties,
-    workerProfileBio,
-    workerChargePerDay,)
+  // console.log("workerName",workerName,workerEmail,
+  //   workerPhoneNumber,
+  //   workerExperties,
+  //   workerProfileBio,
+  //   workerChargePerDay,)
  
   try {
     const updatedWorker = await WorkerModel.findByIdAndUpdate(_id,{
