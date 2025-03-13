@@ -1,12 +1,17 @@
+import { NextRequest, NextResponse } from "next/server";
 import dbConnection from "@/lib/dbConnection";
 import { WorkerModel } from "@/models/worker.model";
 import cloudinary from "@/lib/cloudinary";
 
-export async function POST(request:Request,{params}:{params:{_id:string}}){
-    dbConnection()
+export async function POST(request: NextRequest) {
+    dbConnection();
     try {
         const formData = await request.formData();
-        const {_id}=await params
+        
+        // Get the _id from the URL using request.url
+        const url = new URL(request.url);
+        const _id = url.pathname.split('/').pop();
+        
         const profilePic = formData.get("profilePic") as File | null;
         console.log("profilePic", profilePic);
 
@@ -27,26 +32,25 @@ export async function POST(request:Request,{params}:{params:{_id:string}}){
             }
         }
         console.log("profilePic", profilePicUrl);
-        const worker=await WorkerModel.findById(_id)
-        if(worker){
-            worker.workerProfilePicture=profilePicUrl
-            await worker.save()
+        const worker = await WorkerModel.findById(_id);
+        if (worker) {
+            worker.workerProfilePicture = profilePicUrl;
+            await worker.save();
         }
-        return Response.json(
+        return NextResponse.json(
             {
                 success: true,
                 message: "Profile Picture Updated",
             },
             { status: 200 }
-        )
+        );
     } catch (error) {
-        Response.json(
+        return NextResponse.json(
             {
                 success: false,
                 message: "Profile Picture Update Failed",
             },
             { status: 500 }
-        )
+        );
     }
-    
 }
