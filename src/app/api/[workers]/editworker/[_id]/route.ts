@@ -1,6 +1,6 @@
 import dbConnection from "@/lib/dbConnection";
 import { WorkerModel } from "@/models/worker.model";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
   request: NextRequest,
@@ -41,7 +41,7 @@ export async function POST(
     }, {
       new: true,
     });
-    return Response.json(
+    return NextResponse.json(
         {
             success: true,
             message: "Worker Updated Successfully",
@@ -49,17 +49,17 @@ export async function POST(
         {
             status: 200,
         }
-    ) 
+    );
   } catch (error) {
     console.log("Error in updating worker", error);
-    return Response.json(
+    return NextResponse.json(
         {
-            success:false,
-            message:"Error in updating worker"
+            success: false,
+            message: "Error in updating worker"
         },
         {
-            status:500
+            status: 500
         }
-    )
+    );
   }
 }
