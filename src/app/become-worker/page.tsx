@@ -51,40 +51,40 @@ export default function CreateWorker() {
 
   const onSubmit = async(data: z.infer<typeof createWorkerSchema>) => {
     setIsSubmitting(true)
-     try {
-      const response=await axios.post(`/api/workers/create-workers`,{
-        workerPhoneNumber:data.workerPhoneNumber,
-        workerProfileBio:data.workerProfileBio,
-        workerChargePerDay:Number(data.workerChargePerDay),
-        workerChargePerMonth:Number(data.workerChargePerMonth),
-        workerExperties:data.workerExperties,
-        workerLocation:data.workerLocation,
-        workerName:username,
-        workerEmail:email,
+    try {
+      const response = await axios.post(`/api/workers/create-workers`, {
+        workerPhoneNumber: data.workerPhoneNumber,
+        workerProfileBio: data.workerProfileBio,
+        workerChargePerDay: Number(data.workerChargePerDay) || 0,
+        workerChargePerMonth: Number(data.workerChargePerMonth) || 0,
+        workerExperties: data.workerExperties,
+        workerLocation: data.workerLocation,
+        workerName: username,
+        workerEmail: email,
       })
       toast({
-        title:"Success",
-        description:response.data.message
+        title: "Success",
+        description: response.data.message
       })
       setIsSubmitting(false)
       router.replace(`/verify-worker/${email}`)
-     } catch (error) {
-      console.error("Error during creating workers",error)
-      const axiosError=error as AxiosError<any>
+    } catch (error) {
+      console.error("Error during creating workers", error)
+      const axiosError = error as AxiosError<any>
       toast({
-        title:"Error",
-        description:axiosError.response?.data.message || "Error during creating workers",
-        variant:"destructive"
+        title: "Error",
+        description: axiosError.response?.data.message || "Error during creating workers",
+        variant: "destructive"
       })
       setIsSubmitting(false)
-     }
+    }
   };
 
   return (
     <div className="w-full h-screen flex justify-center mt-4">
-      <div className="w-full md:w-[400px] rounded border border-slate-300 h-fit p-4">
+      <div className="w-full md:w-[400px] rounded border border-slate-300 h-fit p-8">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mb-4">
             <FormField
               control={form.control}
               name="workerPhoneNumber"
@@ -123,7 +123,7 @@ export default function CreateWorker() {
                       placeholder="charge/day in ₹"
                       type="number"
                       {...field}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
+                      onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : 0)}
                     />
                   </FormControl>
                   <FormDescription>
@@ -144,7 +144,7 @@ export default function CreateWorker() {
                       placeholder="charge/month in ₹"
                       type="number"
                       {...field}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
+                      onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : 0)}
                     />
                   </FormControl>
                   <FormDescription>

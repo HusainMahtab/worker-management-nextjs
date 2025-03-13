@@ -34,45 +34,45 @@ export function AppSidebar() {
         <SidebarContent>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <Link href="/" onClick={handleLinkClick}>
+              <Link href="/" onClick={handleLinkClick} className="w-full">
+                <div className="flex w-full items-center gap-2 rounded-md p-2 text-sm hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
                   <HomeIcon className="h-4 w-4" />
                   <span>Home</span>
-                </Link>
-              </SidebarMenuButton>
+                </div>
+              </Link>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <Link href="#" onClick={handleLinkClick}>
+              <Link href="#" onClick={handleLinkClick} className="w-full">
+                <div className="flex w-full items-center gap-2 rounded-md p-2 text-sm hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
                   <Users className="h-4 w-4" />
                   <span>Workers</span>
-                </Link>
-              </SidebarMenuButton>
+                </div>
+              </Link>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <Link href="#" onClick={handleLinkClick}>
+              <Link href="#" onClick={handleLinkClick} className="w-full">
+                <div className="flex w-full items-center gap-2 rounded-md p-2 text-sm hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
                   <Bell className="h-4 w-4" />
                   <span>Notifications</span>
-                </Link>
-              </SidebarMenuButton>
+                </div>
+              </Link>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <Link href="#" onClick={handleLinkClick}>
+              <Link href="#" onClick={handleLinkClick} className="w-full">
+                <div className="flex w-full items-center gap-2 rounded-md p-2 text-sm hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
                   <Settings className="h-4 w-4" />
                   <span>Settings</span>
-                </Link>
-              </SidebarMenuButton>
+                </div>
+              </Link>
             </SidebarMenuItem>
             <SidebarMenuItem>
               {session?.user && (
-                <SidebarMenuButton asChild>
-                  <Link href="/become-worker" onClick={handleLinkClick}>
+                <Link href="/become-worker" onClick={handleLinkClick} className="w-full">
+                  <div className="flex w-full items-center gap-2 rounded-md p-2 text-sm hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
                     <Users className="h-4 w-4" />
                     <span>Become a Worker</span>
-                  </Link>
-                </SidebarMenuButton>
+                  </div>
+                </Link>
               )}
             </SidebarMenuItem>
           </SidebarMenu>
