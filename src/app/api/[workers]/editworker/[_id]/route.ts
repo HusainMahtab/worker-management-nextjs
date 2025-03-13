@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(
   request: NextRequest,
   { params }: { params: { _id: string } }
-) {
+): Promise<NextResponse> {
   dbConnection();
   const { _id } = params;
   //console.log("id",_id)
