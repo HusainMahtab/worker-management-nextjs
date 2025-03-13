@@ -5,8 +5,11 @@ interface User {
     email: string;
     password: string;
     isVerified: boolean;
-    verificationCode: string;
-    verificationCodeExpiry: Date;
+    verifyCode: string;
+    phoneNumber:string,
+    isWorker:boolean,
+    verifyCodeExpiry: Date;
+    profilePic:string
 }
 
 const userSchema: Schema<User> = new mongoose.Schema({
@@ -24,15 +27,26 @@ const userSchema: Schema<User> = new mongoose.Schema({
         type: String,
         required: [true, "password is required"],
     },
+    phoneNumber:{
+        type:String,
+    },
+    isWorker:{
+        type:Boolean,
+        default:false
+    },
     isVerified: {
         type: Boolean,
         default: false
     },
-    verificationCode: {
+    verifyCode: {
         type: String
     },
-    verificationCodeExpiry: {
+    verifyCodeExpiry: {
         type: Date
+    },
+    profilePic:{
+        type:String,
+        default:""
     }
 }, { timestamps: true });
 

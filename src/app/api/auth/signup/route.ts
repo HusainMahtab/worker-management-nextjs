@@ -7,7 +7,7 @@ import { sendEmail } from "@/lib/nodemailer";
 export async function POST(request: Request) {
     try {
         await dbConnection();
-        const { username, email, password } = await request.json();
+        const { username, email, password,phoneNumber} = await request.json();
 
         // Check if user already exists
         const existingUser = await UserModel.findOne({
@@ -25,7 +25,7 @@ export async function POST(request: Request) {
         }
 
         // Generate verification code
-        const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+        const verifyCode = Math.round(Math.random()*1000000).toString();
         const verificationCodeExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes expiry
 
         // Hash password
@@ -36,8 +36,9 @@ export async function POST(request: Request) {
             username,
             email,
             password: hashedPassword,
-            verificationCode,
-            verificationCodeExpiry,
+            phoneNumber,
+            verifyCode,
+            verifyCodeExpiry:verificationCodeExpiry,
             isVerified: false
         });
 
@@ -48,7 +49,7 @@ export async function POST(request: Request) {
             await sendEmail({
                 email,
                 subject:`verification code`,
-                message:`your verification code is ${verificationCode}`
+                message:`your verification code is ${verifyCode}`
             })
     
         
