@@ -9,11 +9,13 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarFooter,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { useSession } from "next-auth/react";
 
 export function AppSidebar() {
   const { data: session } = useSession();
+  const { setOpenMobile } = useSidebar();
   const currentUser = session?.user.username;
   const slicedName = currentUser ? (
     currentUser[0] +
@@ -21,6 +23,11 @@ export function AppSidebar() {
   ) : (
     <CircleUser />
   );
+
+  const handleLinkClick = () => {
+    setOpenMobile(false);
+  };
+
   return (
     <div>
       <Sidebar className="mt-[58px]">
@@ -28,7 +35,7 @@ export function AppSidebar() {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <Link href="/">
+                <Link href="/" onClick={handleLinkClick}>
                   <HomeIcon className="h-4 w-4" />
                   <span>Home</span>
                 </Link>
@@ -36,7 +43,7 @@ export function AppSidebar() {
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <Link href="#">
+                <Link href="#" onClick={handleLinkClick}>
                   <Users className="h-4 w-4" />
                   <span>Workers</span>
                 </Link>
@@ -44,7 +51,7 @@ export function AppSidebar() {
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <Link href="#">
+                <Link href="#" onClick={handleLinkClick}>
                   <Bell className="h-4 w-4" />
                   <span>Notifications</span>
                 </Link>
@@ -52,7 +59,7 @@ export function AppSidebar() {
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <Link href="#">
+                <Link href="#" onClick={handleLinkClick}>
                   <Settings className="h-4 w-4" />
                   <span>Settings</span>
                 </Link>
@@ -61,7 +68,7 @@ export function AppSidebar() {
             <SidebarMenuItem>
               {session?.user && (
                 <SidebarMenuButton asChild>
-                  <Link href="/become-worker">
+                  <Link href="/become-worker" onClick={handleLinkClick}>
                     <Users className="h-4 w-4" />
                     <span>Become a Worker</span>
                   </Link>
@@ -70,7 +77,7 @@ export function AppSidebar() {
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarContent>
-        <SidebarFooter className="md:mb-16">
+        <SidebarFooter className="fixed bottom-0 left-0 right-0">
           <div className="w-full h-full flex gap-4 items-center">
             <div className="w-[40px] h-[40px] flex justify-center items-center rounded-full bg-slate-500">
               <p className="p-2">{slicedName}</p>
