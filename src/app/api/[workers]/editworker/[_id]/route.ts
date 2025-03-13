@@ -2,15 +2,9 @@ import dbConnection from "@/lib/dbConnection";
 import { WorkerModel } from "@/models/worker.model";
 import { NextRequest } from "next/server";
 
-type RouteContext = {
-  params: {
-    _id: string;
-  };
-};
-
 export async function POST(
   request: NextRequest,
-  { params }: RouteContext
+  { params }: { params: { _id: string } }
 ) {
   dbConnection();
   const { _id } = params;
