@@ -1,13 +1,13 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import dbConnection from '@/lib/dbConnection';
 import { WorkerModel } from '@/models/worker.model';
 
-export async function GET(request: Request, { params }: { params: { _id: string } }) {
+export async function GET(request: NextRequest) {
     await dbConnection();
 
-    // Extract the `id` from the route parameters
-    const { _id } =await params;
-   // console.log(_id)
+    // Get the _id from the URL using request.url
+    const url = new URL(request.url);
+    const _id = url.pathname.split('/').pop();
 
     if (!_id) {
         return NextResponse.json(
@@ -25,7 +25,7 @@ export async function GET(request: Request, { params }: { params: { _id: string 
             );
         }
         return NextResponse.json(
-            { success: true,worker},
+            { success: true, worker },
             { status: 200 }
         );
     } catch (error) {
