@@ -9,7 +9,9 @@ export async function POST(request: Request) {
         const {username,email,phoneNumber,password}=await request.json()
         const isAlreadyExist = await UserModel.findOne({ email });
         const hashPassword = await bcrypt.hash(password, 10);
-        const generateCode = Math.round(Math.random() * 1000000).toString();
+        const generateCode = Math.round(Math.random() * 1000000)
+        .toString()
+        .padStart(6, '0');
 
         if (isAlreadyExist) {
             if (isAlreadyExist.isVerified) {
