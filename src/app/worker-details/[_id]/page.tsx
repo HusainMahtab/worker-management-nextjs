@@ -46,6 +46,11 @@ function WorkerDetails() {
     extraCharge: false,
     badService: false,
   });
+  const [startDate, setStartDate] = useState<Date | undefined>();
+  const [endDate, setEndDate] = useState<Date | undefined>();
+  const [bookingType, setBookingType] = useState<'daily' | 'monthly'>('daily');
+  const [totalAmount, setTotalAmount] = useState<number>(0);
+  const [isBookingDialogOpen, setIsBookingDialogOpen] = useState(false);
   const params = useParams<{ _id: string }>();
   const [loading, setLoading] = useState(true);
   const profileName = workerDetails.workerName;
@@ -88,6 +93,20 @@ function WorkerDetails() {
     }
   }, [params._id]);
 
+  useEffect(() => {
+    if (startDate && endDate && workerDetails) {
+      const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      
+      if (bookingType === 'daily') {
+        setTotalAmount(diffDays * workerDetails.workerChargePerDay);
+      } else {
+        const months = Math.ceil(diffDays / 30);
+        setTotalAmount(months * workerDetails.workerChargePerMonth);
+      }
+    }
+  }, [startDate, endDate, bookingType, workerDetails]);
+
   const handleCheckboxChange = (checked: boolean, name: string) => {
     setCheckedItems((prev) => ({
       ...prev,
@@ -126,6 +145,51 @@ function WorkerDetails() {
         title: "Report Submission Failed!",
         description: message,
         variant: "destructive",
+      });
+    }
+  };
+
+  const handleBooking = async () => {
+    if (!startDate || !endDate) {
+      toast({
+        title: "Please select dates",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (!currentUser) {
+      toast({
+        title: "Please login to book",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      const response = await axios.post("/api/bookings/create", {
+        bookingFrom: currentUser,
+        bookingTo: workerDetails.workerEmail,
+        startDate,
+        endDate,
+        totalAmount,
+        bookingType,
+        workerName: workerDetails.workerName,
+        userName: session.data?.user?.username
+      });
+
+      toast({
+        title: "Booking Successful",
+        description: "Worker will be notified of your booking request."
+      });
+      setIsBookingDialogOpen(false);
+    } catch (error) {
+      console.error("Error creating booking:", error);
+      const axiosError = error as AxiosError<any>;
+      toast({
+        title: "Booking Failed",
+        description: axiosError.response?.data.message || "Error creating booking",
+        variant: "destructive"
       });
     }
   };
@@ -216,7 +280,59 @@ function WorkerDetails() {
                 </p>
               </div>
               <div className="p-2 flex gap-4">
-                <Button>Book Now</Button>
+                <Dialog open={isBookingDialogOpen} onOpenChange={setIsBookingDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button onClick={() => setIsBookingDialogOpen(true)}>Book Now</Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>Book Worker</DialogTitle>
+                      <DialogDescription>
+                        Book <span className="text-blue-400 text-lg font-serif">{workerDetails?.workerName}</span> for your work. Select dates and booking type.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="flex flex-col gap-4 py-4">
+                      <div className="flex flex-col gap-2">
+                        <label className="text-sm font-medium">Booking Type</label>
+                        <select 
+                          className="p-2 border rounded-md bg-slate-500"
+                          value={bookingType}
+                          onChange={(e) => setBookingType(e.target.value as 'daily' | 'monthly')}
+                        >
+                          <option value="daily">Daily</option>
+                          <option value="monthly">Monthly</option>
+                        </select>
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <label className="text-sm font-medium">Start Date</label>
+                        <input 
+                          type="date"
+                          className="p-2 border rounded-md bg-slate-500"
+                          onChange={(e) => setStartDate(new Date(e.target.value))}
+                          min={new Date().toISOString().split('T')[0]}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <label className="text-sm font-medium">End Date</label>
+                        <input 
+                          type="date"
+                          className="p-2 border rounded-md bg-slate-500"
+                          onChange={(e) => setEndDate(new Date(e.target.value))}
+                          min={startDate ? startDate.toISOString().split('T')[0] : new Date().toISOString().split('T')[0]}
+                        />
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-medium">Total Amount:</span>
+                        <span>₹{totalAmount}</span>
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <Button type="submit" onClick={handleBooking}>
+                        Confirm Booking
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
                 <Dialog open={isReportDialogOpen} onOpenChange={setIsReportDialogOpen}>
                   <DialogTrigger asChild>
                     <Button onClick={() => setIsReportDialogOpen(true)}>Report</Button>
