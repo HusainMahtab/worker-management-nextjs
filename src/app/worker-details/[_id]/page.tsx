@@ -13,6 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/hooks/use-toast";
@@ -58,6 +59,7 @@ function WorkerDetails() {
   const session = useSession();
   const currentUser = session.data?.user.email;
   const [reviews, setReviews] = useState([]);
+  const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
 
   const fetchWorkerDetails = async () => {
     try {
@@ -115,13 +117,14 @@ function WorkerDetails() {
       toast({
         title: "Report Submit Successfully",
       });
+      setIsReportDialogOpen(false);
     } catch (error) {
       console.error("Error submitting report:", error);
-      const axiosError =error as AxiosError<any>;
-      const message=axiosError.response?.data.message;
+      const axiosError = error as AxiosError<any>;
+      const message = axiosError.response?.data.message;
       toast({
-        title:"Report Submition Faields!",
-        description:message,
+        title: "Report Submission Failed!",
+        description: message,
         variant: "destructive",
       });
     }
@@ -214,9 +217,9 @@ function WorkerDetails() {
               </div>
               <div className="p-2 flex gap-4">
                 <Button>Book Now</Button>
-                <Dialog>
+                <Dialog open={isReportDialogOpen} onOpenChange={setIsReportDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button>Report</Button>
+                    <Button onClick={() => setIsReportDialogOpen(true)}>Report</Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
