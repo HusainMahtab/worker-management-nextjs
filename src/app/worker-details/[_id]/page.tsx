@@ -42,7 +42,7 @@ interface Worker {
 function WorkerDetails() {
   const [workerDetails, setWorkerDetails] = useState<Worker>({} as Worker);
   const [checkedItems, setCheckedItems] = useState({
-    abusing: false,
+    behaveBadly: false,
     extraCharge: false,
     badService: false,
   });
@@ -352,11 +352,11 @@ function WorkerDetails() {
                       <div className="flex items-center gap-4">
                         <div className="items-top flex space-x-2">
                           <Checkbox
-                            id="abusing"
-                            name="abusing"
-                            checked={checkedItems.abusing}
+                            id="behaveBadly"
+                            name="behaveBadly"
+                            checked={checkedItems.behaveBadly}
                             onCheckedChange={(checked) =>
-                              handleCheckboxChange(checked as boolean, "abusing")
+                              handleCheckboxChange(checked as boolean, "behaveBadly")
                             }
                           />
                           <div className="grid gap-1.5 leading-none">
@@ -364,7 +364,7 @@ function WorkerDetails() {
                               htmlFor="abusing"
                               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                             >
-                              Abusing
+                              Behave Badly
                             </label>
                           </div>
                         </div>
